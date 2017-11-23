@@ -1,13 +1,20 @@
 var roles = {
-    'harvester': require('harvester'),
-    'upgrader': require('upgrader'),
-    'builder': require('builder')
+    'harvester': {code: require('harvester'),design: 'civilian'},
+    'upgrader': {code: require('upgrader'),design: 'civilian'},
+    'builder': {code: require('builder'), design: 'civilian'},
+    'fighter': {code: require('fighter'), design: 'military'}
 };
 
 var creep_limits = {
-    'harvester': 1,
+    'harvester': 2,
     'upgrader': 1,
-    'builder': 2
+    'builder': 3,
+    'fighter': 1
+};
+
+var drone_designs = {
+    'civilian': [WORK,WORK,CARRY,MOVE],
+    'military': [ATTACK,ATTACK,MOVE,MOVE]
 };
 
 module.exports.loop = function () {
@@ -35,16 +42,18 @@ module.exports.loop = function () {
     //Spawning missing creeps
     for(var role in roles){
         if(counts[role] < creep_limits[role]){
-            console.log("Spawning 1x " + role)
-            Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], role + String(counts[role]), {memory: {'role': role}})
+            console.log("Spawning 1x " + role);
+            Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + String(counts[role]), {memory: {'role': role}});
         }
     }
     
     //Creep role logic
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
-        if(typeof roles[creep.memory.role] != "undefined"){
-            roles[creep.memory.role].run(creep);
+        var role = creep.memory.role;
+        if(typeof roles[role] != "undefined"){
+            console.log("Running logic for: " + creep.name + " => " + role);
+            roles[role].code.run(creep);
         }
     }
     console.log("=======> END TICK <========");
