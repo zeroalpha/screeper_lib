@@ -10,6 +10,7 @@
 var move_energy = function(creep,action) {
     if(creep.carry.energy < creep.carryCapacity){
         var src = creep.room.find(FIND_SOURCES)[0];
+        creep.say('🔄 harvest');
         if(creep.harvest(src) == ERR_NOT_IN_RANGE){
             creep.moveTo(src);
         }

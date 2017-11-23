@@ -8,11 +8,13 @@ var upgrader = {
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
             console.log(creep.name + ": Inventory empty");
+            creep.say('🔄 harvest');
         }
         
         if(!creep.memory.full && creep.carry.energy == creep.carryCapacity){
             creep.memory.full = true;
             console.log(creep.name + ": Inventory full");
+            creep.say('🔧 upgrade');
         }
         
         if(creep.memory.full){
