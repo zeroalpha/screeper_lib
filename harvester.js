@@ -1,29 +1,19 @@
 var helper = require("creep_helper"); 
-/*
-var harvester = {
-    run: function(creep){
-        if(creep.carry.energy < creep.carryCapacity){
-            var src = creep.room.find(FIND_SOURCES)[0];
-            if(creep.harvest(src) == ERR_NOT_IN_RANGE){
-                creep.moveTo(src);
-            }
-        }
-        else{
-            var spwn = Game.spawns['Spawn1'];
-            if(creep.transfer(spwn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-                creep.moveTo(spwn);
-            }
-        }
-    }
-};
-*/
+
 var harvester = {
     run: function(creep){
         helper.move_energy(creep,function(){
-            var spwn = Game.spawns['Spawn1'];
-            if(creep.transfer(spwn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-                creep.moveTo(spwn);
-            }           
+            var targets = creep.room.find(FIND_STRUCTURES, {
+                filter: function(struct){
+                    return (struct.structureType == STRUCTURE_EXTENSION || struct.structureType == STRUCTURE_SPAWN) && struct.energy < struct.energyCapacity;
+                }
+            });
+            //FIXME Spawn priorisieren ?
+            if(targets.length > 0){
+                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                    creep.moveTo(targets[0]);
+                }
+            }
         });
     }
 };
