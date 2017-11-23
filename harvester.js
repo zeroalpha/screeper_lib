@@ -5,7 +5,7 @@ var harvester = {
         helper.move_energy(creep,function(){
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: function(struct){
-                    return (struct.structureType == STRUCTURE_EXTENSION || struct.structureType == STRUCTURE_SPAWN) && struct.energy < struct.energyCapacity;
+                    return (struct.structureType == STRUCTURE_EXTENSION || struct.structureType == STRUCTURE_SPAWN || struct.structureType == STRUCTURE_TOWER) && struct.energy < struct.energyCapacity;
                 }
             });
             //FIXME Spawn priorisieren ?
