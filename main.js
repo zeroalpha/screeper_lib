@@ -7,10 +7,17 @@ var roles = {
 var creep_limits = {
     'harvester': 1,
     'upgrader': 1,
-    'builder': 1
+    'builder': 2
 };
 
 module.exports.loop = function () {
+    console.log("=======> NEW TICK <========");
+    for(var name in Memory.creeps) {
+        if(!Game.creeps[name]) {
+            delete Memory.creeps[name];
+            console.log('Clearing non-existing creep memory:', name);
+        }
+    }
     
     //Creep spawning
     //Counting creeps per role
@@ -28,6 +35,7 @@ module.exports.loop = function () {
     //Spawning missing creeps
     for(var role in roles){
         if(counts[role] < creep_limits[role]){
+            console.log("Spawning 1x " + role)
             Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], role + String(counts[role]), {memory: {'role': role}})
         }
     }
@@ -39,5 +47,6 @@ module.exports.loop = function () {
             roles[creep.memory.role].run(creep);
         }
     }
+    console.log("=======> END TICK <========");
 
 }
