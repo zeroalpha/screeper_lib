@@ -16,10 +16,12 @@ var builder = {
         var src = creep.room.find(FIND_SOURCES)[0];
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
+            console.log(creep.name + ": Inventory empty");
         }
         
         if(!creep.memory.full && creep.carry.energy == creep.carryCapacity){
             creep.memory.full = true;
+            console.log(creep.name + ": Inventory full");
         }
         
         if(creep.memory.full){
