@@ -26,8 +26,4 @@ var role = {
     }
 };
 
-
-
-module.exports = {
-
-};
+module.exports = role;
