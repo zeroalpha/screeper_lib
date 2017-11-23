@@ -8,9 +8,9 @@ var roles = {
 var spawn_priority = ['harvester', 'upgrader', 'builder', 'fighter'];
 
 var creep_limits = {
-    'harvester': 2,
-    'upgrader': 1,
-    'builder': 3,
+    'harvester': 3,
+    'upgrader': 2,
+    'builder': 4,
     'fighter': 1
 };
 
@@ -48,7 +48,7 @@ module.exports.loop = function () {
         var role = spawn_priority[i];
         if(counts[role] < creep_limits[role]){
             console.log("Spawning 1x " + role);
-            var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + String(counts[role]), {memory: {'role': role}});
+            var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + Game.time, {memory: {'role': role}});
             console.log("spawnCreep returned: " + r);
         }        
     }
