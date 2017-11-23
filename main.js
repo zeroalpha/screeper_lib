@@ -5,6 +5,8 @@ var roles = {
     'fighter': {code: require('fighter'), design: 'military'}
 };
 
+var spawn_priority = ['harvester', 'upgrader', 'builder', 'fighter'];
+
 var creep_limits = {
     'harvester': 2,
     'upgrader': 1,
@@ -30,22 +32,28 @@ module.exports.loop = function () {
     //Counting creeps per role
     var counts = {};
     for(var role in roles){
-        //counts[role] = Game.creeps.filter(function(creep) {return creep.memory.role == role}).length
         counts[role] = 0;
         for(var creep in Game.creeps){
             if(Game.creeps[creep].memory.role == role){
                 counts[role] = counts[role] + 1;
             }
         }
+        console.log("Counted creeps with role: " + role + " : " + counts[role]);
     }
     Memory.my_counts = counts;
     //Spawning missing creeps
-    for(var role in roles){
+    //for(var role of spawn_priority){
+    //_.each(spawn_priority,function(e,i,list){
+    for(var i = 0; i<spawn_priority.length;i++){
+        var role = spawn_priority[i];
         if(counts[role] < creep_limits[role]){
             console.log("Spawning 1x " + role);
-            Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + String(counts[role]), {memory: {'role': role}});
-        }
+            var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + String(counts[role]), {memory: {'role': role}});
+            console.log("spawnCreep returned: " + r);
+        }        
     }
+
+    
     
     //Creep role logic
     for(var name in Game.creeps) {
