@@ -11,8 +11,9 @@ var helper = require("creep_helper");
 
 var builder = {
     run: function(creep){
-        //console.log("Start");
-        var site = creep.room.find(FIND_MY_CONSTRUCTION_SITES)[0];
+        //select site with highest progress
+        var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        var site = _.sortBy(sites,'progress')[sites.length - 1];
         var src = creep.room.find(FIND_SOURCES)[0];
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
