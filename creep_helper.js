@@ -7,6 +7,22 @@
  * mod.thing == 'a thing'; // true
  */
 
+var directions = [
+    TOP,
+    TOP_RIGHT,
+    RIGHT,
+    BOTTOM_RIGHT,
+    BOTTOM,
+    BOTTOM_LEFT,
+    LEFT,
+    TOP_LEFT
+];
+
+var random_move = function(creep){
+    creep.say("⚙ Idling");
+    creep.move(directions[_.random(0,7)]);
+}
+
 var move_energy = function(creep,action) {
     if(creep.carry.energy < creep.carryCapacity){
         var src = creep.room.find(FIND_SOURCES)[0];
@@ -30,5 +46,6 @@ var m_harvest = function(creep,src){
 
 module.exports = {
     'move_energy': move_energy,
-    'm_harvest': m_harvest
+    'm_harvest': m_harvest,
+    'random_move': random_move
 };
