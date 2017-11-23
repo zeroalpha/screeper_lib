@@ -48,7 +48,7 @@ module.exports.loop = function () {
         var role = spawn_priority[i];
         if(counts[role] < creep_limits[role]){
             console.log("Spawning 1x " + role);
-            var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + Game.time, {memory: {'role': role}});
+            var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
             console.log("spawnCreep returned: " + r);
         }        
     }
