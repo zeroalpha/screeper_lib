@@ -28,7 +28,7 @@ var move_energy = function(creep,action) {
         var src = creep.room.find(FIND_SOURCES)[0];
         creep.say('🔄 harvest');
         if(creep.harvest(src) == ERR_NOT_IN_RANGE){
-            creep.moveTo(src);
+            creep.moveTo(src,{visualizePathStyle: {stroke: '#27C240'}});
         }
     }
     else{
@@ -39,7 +39,7 @@ var move_energy = function(creep,action) {
 var m_harvest = function(creep,src){
     if(creep.harvest(src) == ERR_NOT_IN_RANGE){
         //console.log("Moving to source");
-        creep.moveTo(src);
+        creep.moveTo(src,{visualizePathStyle: {stroke: '#27C240'}});
     }
 }
 

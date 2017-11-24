@@ -30,7 +30,7 @@ var builder = {
         if(creep.memory.full){
             if(creep.build(site) == ERR_NOT_IN_RANGE){
                 //console.log("Moving to Build Site");
-                creep.moveTo(site);
+                creep.moveTo(site,{visualizePathStyle: {stroke: '#0055ff'}});
             }            
         }else{
             helper.m_harvest(creep,src);      
