@@ -2,20 +2,22 @@ var roles = {
     'harvester': {code: require('harvester'),design: 'civilian'},
     'upgrader': {code: require('upgrader'),design: 'civilian'},
     'builder': {code: require('builder'), design: 'civilian'},
+    'repair': {code: require('repair'), design: 'civilian'},
     'fighter': {code: require('fighter'), design: 'military'}
 };
 
-var spawn_priority = ['harvester', 'upgrader', 'builder', 'fighter'];
+var spawn_priority = ['harvester', 'upgrader', 'builder', 'repair', 'fighter'];
 
 var creep_limits = {
-    'harvester': 5,
-    'upgrader': 2,
+    'harvester': 6,
+    'upgrader': 3,
     'builder': 4,
+    'repair': 1,
     'fighter': 1
 };
 
 var drone_designs = {
-    'civilian': [WORK,WORK,CARRY,MOVE],
+    'civilian': [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
     'military': [ATTACK,ATTACK,MOVE,MOVE]
 };
 
@@ -73,6 +75,17 @@ module.exports.loop = function () {
             console.log("Running logic for: " + creep.name + " => " + role);
             roles[role].code.run(creep);
         }
+    }
+    //Report
+    console.log("Energy Storage: " + Game.spawns['Spawn1'].room.energyAvailable + "/" + Game.spawns['Spawn1'].room.energyCapacityAvailable);
+    console.log("Cost per design");
+    for(design in drone_designs){
+        var sum = 0;
+        for(part of drone_designs[design]){
+            sum = sum + BODYPART_COST[part];
+            //console.log("Part: " + part + " cost: " + BODYPART_COST[part]);
+        }
+        console.log(design + ": " + sum);
     }
     console.log("=======> END TICK <========");
 
