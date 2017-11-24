@@ -44,13 +44,23 @@ module.exports.loop = function () {
     //Spawning missing creeps
     //for(var role of spawn_priority){
     //_.each(spawn_priority,function(e,i,list){
+    //Building spawn Queue
+    var spawn_queue = [];
     for(var i = 0; i<spawn_priority.length;i++){
         var role = spawn_priority[i];
         if(counts[role] < creep_limits[role]){
-            console.log("Spawning 1x " + role);
-            var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
-            console.log("spawnCreep returned: " + r);
-        }        
+            //console.log("Spawning 1x " + role);
+            //var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
+            //console.log("spawnCreep returned: " + r);
+            spawn_queue.push(role);
+        }
+    }
+    console.log("Spawn Queue: " + String(spawn_queue));
+    if(!Game.spawns['Spawn1'].spawning){
+        var role = spawn_queue.shift();
+        console.log("Spawning 1x " + role);
+        var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
+        console.log("spawnCreep returned: " + r);
     }
 
     
