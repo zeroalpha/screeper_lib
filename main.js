@@ -8,7 +8,7 @@ var roles = {
 var spawn_priority = ['harvester', 'upgrader', 'builder', 'fighter'];
 
 var creep_limits = {
-    'harvester': 3,
+    'harvester': 5,
     'upgrader': 2,
     'builder': 4,
     'fighter': 1
@@ -56,7 +56,7 @@ module.exports.loop = function () {
         }
     }
     console.log("Spawn Queue: " + String(spawn_queue));
-    if(!Game.spawns['Spawn1'].spawning){
+    if(spawn_queue.length > 0 && !Game.spawns['Spawn1'].spawning){
         var role = spawn_queue.shift();
         console.log("Spawning 1x " + role);
         var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
