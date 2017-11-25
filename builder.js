@@ -16,6 +16,11 @@ var builder = {
         var site = _.sortBy(sites,'progress')[sites.length - 1];
         var sources = creep.room.find(FIND_SOURCES);
         var src = sources[(_.random(0,sources.length - 1))];
+        
+        if(!site){
+            helper.random_move(creep);
+        }
+        
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
             console.log(creep.name + ": Inventory empty");
