@@ -2,7 +2,19 @@ var helper = require("creep_helper");
 
 var harvester = {
     run: function(creep){
-        helper.move_energy(creep,function(){
+        var src = creep.room.find(FIND_SOURCES)[0];
+        
+        if(creep.memory.full && creep.carry.energy == 0){
+            creep.memory.full = false;
+            creep.say('🔄 harvest');
+        }
+        
+        if(!creep.memory.full && creep.carry.energy == creep.carryCapacity){
+            creep.memory.full = true;
+            creep.say('🚚 deliver');
+        }
+        
+        if(creep.memory.full){
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: function(struct){
                     return (struct.structureType == STRUCTURE_EXTENSION || struct.structureType == STRUCTURE_SPAWN || struct.structureType == STRUCTURE_TOWER) && struct.energy < struct.energyCapacity;
@@ -16,8 +28,11 @@ var harvester = {
                 }
             }else{
                 helper.random_move(creep);
-            }
-        });
+            }            
+        }
+        else{
+            helper.m_harvest(creep,src);
+        }
     }
 };
 
