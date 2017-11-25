@@ -14,7 +14,8 @@ var builder = {
         //select site with highest progress
         var sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
         var site = _.sortBy(sites,'progress')[sites.length - 1];
-        var src = creep.room.find(FIND_SOURCES)[0];
+        var sources = creep.room.find(FIND_SOURCES);
+        var src = sources[(_.random(0,sources.length - 1))];
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
             console.log(creep.name + ": Inventory empty");

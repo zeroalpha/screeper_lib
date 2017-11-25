@@ -11,7 +11,8 @@ var helper = require("creep_helper");
 
 var role = {
     run: function(creep){
-        var src = creep.room.find(FIND_SOURCES)[0];
+        var sources = creep.room.find(FIND_SOURCES);
+        var src = sources[(_.random(0,sources.length - 1))];
         
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
@@ -44,12 +45,7 @@ var role = {
         else{
             helper.m_harvest(creep,src);
         }
-        
-
-        
     }
-    
-    
 };
 
 module.exports = role;
