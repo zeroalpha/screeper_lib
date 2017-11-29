@@ -59,7 +59,7 @@ module.exports.loop = function () {
         }
         //console.log("Counted creeps with role: " + role + " : " + counts[role]);
     }
-    Memory.my_counts = counts;
+    Memory.my_creep_counts = counts;
     //Check whether theres anything to build
     var build_sites = Game.spawns['Spawn1'].room.find(FIND_MY_CONSTRUCTION_SITES);
     creep_limits['builder'] = (build_sites.length == 0) ? 0 : BUILDER_LIMIT;
