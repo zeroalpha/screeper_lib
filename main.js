@@ -2,10 +2,9 @@
  * TODO:
  * - implement fallback designs (small harvester)
  * - vary designs on available energ y?
- * - only spawn builders if there are bhuild sites
+ * - setup static selection for sources to harvest
  * 
- * 
- * 
+ * - Switch Builder spawn logic to use global Game.constructionSites
  * 
 **/
 
@@ -28,12 +27,13 @@ var creep_limits = {
     'fighter': 1
 };
 
-const BUILDER_LIMIT = 6;
+const BUILDER_LIMIT = 3;
 
 var drone_designs = {
     //'civilian': [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE],
-    'civilian': [WORK,CARRY,CARRY,MOVE,MOVE],
-    'military': [ATTACK,ATTACK,MOVE,MOVE]
+    'civilian': [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
+    'military': [ATTACK,ATTACK,MOVE,MOVE],
+    'emergency': [WORK,CARRY,MOVE]
 };
 
 var tower_code = require('tower');
@@ -57,7 +57,7 @@ module.exports.loop = function () {
                 counts[role] = counts[role] + 1;
             }
         }
-        console.log("Counted creeps with role: " + role + " : " + counts[role]);
+        //console.log("Counted creeps with role: " + role + " : " + counts[role]);
     }
     Memory.my_counts = counts;
     //Check whether theres anything to build
@@ -90,7 +90,7 @@ module.exports.loop = function () {
         var creep = Game.creeps[name];
         var role = creep.memory.role;
         if(typeof roles[role] != "undefined"){
-            console.log("Running logic for: " + creep.name + " => " + role);
+            //console.log("Running logic for: " + creep.name + " => " + role);
             roles[role].code.run(creep);
         }
     }
