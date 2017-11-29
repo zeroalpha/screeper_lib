@@ -4,8 +4,7 @@ var upgrader = {
     run: function(creep){
         //console.log("Start");
         var ctrl = creep.room.controller;
-        var sources = creep.room.find(FIND_SOURCES);
-        var src = sources[(_.random(0,sources.length - 1))];
+        var src = Game.getObjectById(helper.select_source(creep));
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
             //console.log(creep.name + ": Inventory empty");

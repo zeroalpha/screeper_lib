@@ -61,7 +61,7 @@ var select_source = function(creep){
             var src_id = Game.creeps[cr].memory.source_id;
             counts[src_id] = counts[src_id] + 1;
         }
-        Memory.my_counts = counts;
+        Memory.my_source_counts = counts;
         delete counts['undefined'];
         //select lowest count
         counts = _.map(counts,function(value,index,list){

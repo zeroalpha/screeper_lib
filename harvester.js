@@ -2,7 +2,8 @@ var helper = require("creep_helper");
 
 var harvester = {
     run: function(creep){
-        var src = creep.room.find(FIND_SOURCES)[0];
+        //var src = creep.room.find(FIND_SOURCES)[0];
+        var src = Game.getObjectById(helper.select_source(creep));
         
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;

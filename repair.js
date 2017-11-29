@@ -11,8 +11,7 @@ var helper = require("creep_helper");
 
 var role = {
     run: function(creep){
-        var sources = creep.room.find(FIND_SOURCES);
-        var src = sources[(_.random(0,sources.length - 1))];
+        var src = Game.getObjectById(helper.select_source(creep));
         
         if(creep.memory.full && creep.carry.energy == 0){
             creep.memory.full = false;
