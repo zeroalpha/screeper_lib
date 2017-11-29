@@ -1,3 +1,15 @@
+/**
+ * TODO:
+ * - implement fallback designs (small harvester)
+ * - vary designs on available energ y?
+ * - only spawn builders if there are bhuild sites
+ * 
+ * 
+ * 
+ * 
+**/
+
+
 var roles = {
     'harvester': {code: require('harvester'),design: 'civilian'},
     'upgrader': {code: require('upgrader'),design: 'civilian'},
@@ -12,14 +24,19 @@ var creep_limits = {
     'harvester': 6,
     'upgrader': 3,
     'builder': 4,
-    'repair': 1,
+    'repair': 2,
     'fighter': 1
 };
 
+const BUILDER_LIMIT = 6;
+
 var drone_designs = {
-    'civilian': [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
+    //'civilian': [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE],
+    'civilian': [WORK,CARRY,CARRY,MOVE,MOVE],
     'military': [ATTACK,ATTACK,MOVE,MOVE]
 };
+
+var tower_code = require('tower');
 
 module.exports.loop = function () {
     console.log("=======> NEW TICK <========");
@@ -43,9 +60,10 @@ module.exports.loop = function () {
         console.log("Counted creeps with role: " + role + " : " + counts[role]);
     }
     Memory.my_counts = counts;
+    //Check whether theres anything to build
+    var build_sites = Game.spawns['Spawn1'].room.find(FIND_MY_CONSTRUCTION_SITES);
+    creep_limits['builder'] = (build_sites.length == 0) ? 0 : BUILDER_LIMIT;
     //Spawning missing creeps
-    //for(var role of spawn_priority){
-    //_.each(spawn_priority,function(e,i,list){
     //Building spawn Queue
     var spawn_queue = [];
     for(var i = 0; i<spawn_priority.length;i++){
@@ -76,6 +94,11 @@ module.exports.loop = function () {
             roles[role].code.run(creep);
         }
     }
+    //Tower Logic
+    for(var spawn in Game.spawns){
+        var tower = Game.spawns[spawn].room.find(FIND_MY_STRUCTURES,{filter: (struct) => struct.structureType == STRUCTURE_TOWER});
+    }
+    
     //Report
     console.log("Energy Storage: " + Game.spawns['Spawn1'].room.energyAvailable + "/" + Game.spawns['Spawn1'].room.energyCapacityAvailable);
     console.log("Cost per design");
