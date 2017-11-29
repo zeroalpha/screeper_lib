@@ -44,9 +44,42 @@ var m_harvest = function(creep,src){
     }
 }
 
+var select_source = function(creep){
+    if(creep.memory.source_id){
+        return creep.memory.source_id;
+    }
+    else{
+        //count current creeps per source
+        var sources = creep.room.find(FIND_SOURCES)
+        var counts = {'undefined': 0};
+        for(src in sources){
+            counts[sources[src].id] = 0;
+        }
+        for(cr in Game.creeps){
+            console.log("Counting source for : " + cr);
+            //counts[Game.creeps[cr].memory.source] = counts[Game.creeps[cr].memory.source] + 1;
+            var src_id = Game.creeps[cr].memory.source_id;
+            counts[src_id] = counts[src_id] + 1;
+        }
+        Memory.my_counts = counts;
+        delete counts['undefined'];
+        //select lowest count
+        counts = _.map(counts,function(value,index,list){
+            console.log("SELECT: " + index + " : " + value);
+            return [value,index];
+        });
+        var lowest = _.sortBy(counts,function(value){
+            return value[0];
+        })[0];
+        creep.memory.source_id = lowest[1];
+        return creep.memory.source_id;
+    }
+}
+
 
 module.exports = {
     'move_energy': move_energy,
     'm_harvest': m_harvest,
-    'random_move': random_move
+    'random_move': random_move,
+    'select_source': select_source
 };
