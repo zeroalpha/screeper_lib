@@ -17,26 +17,9 @@ var roles = {
     'fighter': {code: require('fighter'), design: 'military'}
 };
 
-var spawn_priority = ['harvester', 'upgrader', 'builder', 'repair', 'fighter'];
-
-var creep_limits = {
-    'harvester': 6,
-    'upgrader': 3,
-    'builder': 4,
-    'repair': 2,
-    'fighter': 1
-};
-
-const BUILDER_LIMIT = 3;
-
-var drone_designs = {
-    //'civilian': [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE],
-    'civilian': [WORK,WORK,CARRY,CARRY,MOVE,MOVE],
-    'military': [ATTACK,ATTACK,MOVE,MOVE],
-    'emergency': [WORK,CARRY,MOVE]
-};
-
 var tower_code = require('tower');
+
+var spawn_helper = require('spawn_creeps');
 
 module.exports.loop = function () {
     console.log("=======> NEW TICK <========");
@@ -48,41 +31,7 @@ module.exports.loop = function () {
     }
     
     //Creep spawning
-    //Counting creeps per role
-    var counts = {};
-    for(var role in roles){
-        counts[role] = 0;
-        for(var creep in Game.creeps){
-            if(Game.creeps[creep].memory.role == role){
-                counts[role] = counts[role] + 1;
-            }
-        }
-        //console.log("Counted creeps with role: " + role + " : " + counts[role]);
-    }
-    Memory.my_creep_counts = counts;
-    //Check whether theres anything to build
-    var build_sites = Game.spawns['Spawn1'].room.find(FIND_MY_CONSTRUCTION_SITES);
-    creep_limits['builder'] = (build_sites.length == 0) ? 0 : BUILDER_LIMIT;
-    //Spawning missing creeps
-    //Building spawn Queue
-    var spawn_queue = [];
-    for(var i = 0; i<spawn_priority.length;i++){
-        var role = spawn_priority[i];
-        if(counts[role] < creep_limits[role]){
-            //console.log("Spawning 1x " + role);
-            //var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
-            //console.log("spawnCreep returned: " + r);
-            spawn_queue.push(role);
-        }
-    }
-    console.log("Spawn Queue: " + String(spawn_queue));
-    if(spawn_queue.length > 0 && !Game.spawns['Spawn1'].spawning){
-        var role = spawn_queue.shift();
-        console.log("Spawning 1x " + role);
-        var r = Game.spawns['Spawn1'].spawnCreep(drone_designs[roles[role].design], role + '_' + Game.time, {memory: {'role': role}});
-        console.log("spawnCreep returned: " + r);
-    }
-
+    spawn_helper.spawn(roles);
     
     
     //Creep role logic
@@ -95,16 +44,15 @@ module.exports.loop = function () {
         }
     }
     //Tower Logic
-    for(var spawn in Game.spawns){
-        var tower = Game.spawns[spawn].room.find(FIND_MY_STRUCTURES,{filter: (struct) => struct.structureType == STRUCTURE_TOWER});
-    }
+    var tower = Game.getObjectById('4eab0b298ee06df');
+    tower_code.run(tower);
     
     //Report
     console.log("Energy Storage: " + Game.spawns['Spawn1'].room.energyAvailable + "/" + Game.spawns['Spawn1'].room.energyCapacityAvailable);
     console.log("Cost per design");
-    for(design in drone_designs){
+    for(design in spawn_helper.drone_designs){
         var sum = 0;
-        for(part of drone_designs[design]){
+        for(part of spawn_helper.drone_designs[design]){
             sum = sum + BODYPART_COST[part];
             //console.log("Part: " + part + " cost: " + BODYPART_COST[part]);
         }

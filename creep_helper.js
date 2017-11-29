@@ -7,18 +7,6 @@
  * mod.thing == 'a thing'; // true
  */
  
-/*
- * Helpers Helper
- *
- */
- 
-var calculate_design_cost = function(design){
-    var sum = 0;
-    for(part in design){
-        sum += BODYPART_COST[part];
-    }
-    return sum;
-}
  
 /*
  * Helper exports
@@ -94,10 +82,6 @@ var select_source = function(creep){
         creep.memory.source_id = lowest[1];
         return creep.memory.source_id;
     }
-}
-
-var create_design = function(){
-    
 }
 
 
