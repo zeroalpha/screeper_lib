@@ -40,7 +40,7 @@ var calculate_design_cost = function(design){
 
 var create_drone_design = function(available_energy,drone_type){
     console.log("CREATE  DRONE DESIGN ENERGY: " + available_energy + " TYPE:  " + drone_type);
-    var design = drone_designs['emergency'];
+    var design = Array.from(drone_designs['emergency']);
     //one carry+move per two works
     var remaining_energy = available_energy - Math.floor(calculate_design_cost(design)/100);
     console.log("INITIAL ENERGY: " + remaining_energy);
