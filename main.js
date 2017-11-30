@@ -3,11 +3,13 @@
  * - implement fallback designs (small harvester)
  * - vary designs on available energ y?
  * - setup static selection for sources to harvest
+ * - Apply tower logic to towers automatically (instead of hardcoded by id)
+ * 
+ * - Caching often used parts ?
  * 
  * - Switch Builder spawn logic to use global Game.constructionSites
  * 
 **/
-
 
 var roles = {
     'harvester': {code: require('harvester'),design: 'civilian'},
@@ -32,7 +34,6 @@ module.exports.loop = function () {
     
     //Creep spawning
     spawn_helper.spawn(roles);
-    
     
     //Creep role logic
     for(var name in Game.creeps) {
