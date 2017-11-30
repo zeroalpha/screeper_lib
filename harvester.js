@@ -1,5 +1,7 @@
 var helper = require("creep_helper"); 
 
+var delivery_order = [STRUCTURE_SPAWN,STRUCTURE_EXTENSION,STRUCTURE_TOWER];
+
 var harvester = {
     run: function(creep){
         //var src = creep.room.find(FIND_SOURCES)[0];
@@ -15,21 +17,27 @@ var harvester = {
             creep.say('🚚 deliver');
         }
         
+        var worked = false;
         if(creep.memory.full){
-            var targets = creep.room.find(FIND_STRUCTURES, {
-                filter: function(struct){
-                    return (struct.structureType == STRUCTURE_EXTENSION || struct.structureType == STRUCTURE_SPAWN || struct.structureType == STRUCTURE_TOWER) && struct.energy < struct.energyCapacity;
-                }
-            });
-            //FIXME Spawn priorisieren ?
-            if(targets.length > 0){
-                //creep.say('🚚 deliver');
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-                    creep.moveTo(targets[0],{visualizePathStyle: {stroke: '#1CEDDF'}});
-                }
-            }else{
+            for(target in delivery_order){
+                var target_type = delivery_order[target];
+                var targets = creep.room.find(FIND_STRUCTURES,{filter: function(v){
+                    //console.log('FILTER: ' + v.energy + ' :: ' + v.energyCapacity);
+                    return v.structureType == target_type && v.energy < v.energyCapacity;
+                }});
+                console.log('HARVESTER TARGETS (' + target_type + '): ' + targets);
+                
+                if(!worked && target.length > 0){
+                    //creep.say('🚚 deliver');
+                    if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(targets[0],{visualizePathStyle: {stroke: '#1CEDDF'}});
+                    }
+                    worked = true;
+                }           
+            }
+            if(!worked){
                 helper.random_move(creep);
-            }            
+            }
         }
         else{
             helper.m_harvest(creep,src);
