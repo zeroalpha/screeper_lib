@@ -19,18 +19,18 @@ var harvester = {
         
         var worked = false;
         if(creep.memory.full){
-            console.log("DELIVERY START : worked = " + worked);
+            //console.log("DELIVERY START : worked = " + worked);
             for(target in delivery_order){
                 var target_type = delivery_order[target];
                 var targets = creep.room.find(FIND_STRUCTURES,{filter: function(v){
                     //console.log('FILTER: ' + v.energy + ' :: ' + v.energyCapacity);
                     return v.structureType == target_type && v.energy < v.energyCapacity;
                 }});
-                console.log('HARVESTER TARGETS (' + target_type + '): ' + targets);
+                //console.log('HARVESTER TARGETS (' + target_type + '): ' + targets);
                 
                 if(!worked && targets.length > 0){
                     //creep.say('🚚 deliver');
-                    console.log("DELIVER TO : " + targets);
+                    //console.log("DELIVER TO : " + targets);
                     if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
                         creep.moveTo(targets[0],{visualizePathStyle: {stroke: '#1CEDDF'}});
                     }

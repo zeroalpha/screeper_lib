@@ -1,8 +1,9 @@
 /**
  * TODO:
- * - implement fallback designs (small harvester)
+ * - implement fighter logic
+ * - implement static target logic
+ * 
  * - vary designs on available energ y?
- * - setup static selection for sources to harvest
  * - Apply tower logic to towers automatically (instead of hardcoded by id)
  * 
  * - Caching often used parts ?
